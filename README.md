@@ -1,6 +1,5 @@
 # **Contrastive Representation Learning for Electroencephalogram Classification**  
 **Author:** Pasquale Ricciulli (2115446)  
-[**Original Paper**](https://proceedings.mlr.press/v136/mohsenvand20a.html)
 
 This repository provides a simplified reimplementation of the paper:  
 [Contrastive Representation Learning for Electroencephalogram Classification](https://proceedings.mlr.press/v136/mohsenvand20a.html).
