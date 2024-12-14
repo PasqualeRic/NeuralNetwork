@@ -58,7 +58,7 @@ Below is a visualization of the architectures of the two encoders:
 - **Loss Function**:
   - Negative log-likelihood loss is computed alongside the LogSoftmax layer.
 
-### **Training Classifier**
+### **Training Classifiers**
 The classifier was trained for **10 epochs** with batch size **40**.
 
 ---
