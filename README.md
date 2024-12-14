@@ -46,8 +46,6 @@ Before feeding the data to the encoders, the EEG signals were divided into **chu
 Below is a visualization of the architectures of the two encoders:
 
 ![Architectures](images/Architectures.png)
-Here we can find the preprocessing and augmentation of the signal
-
 
 ---
 
@@ -59,24 +57,56 @@ Here we can find the preprocessing and augmentation of the signal
   - A **LogSoftmax layer** is added.
 - **Loss Function**:
   - Negative log-likelihood loss is computed alongside the LogSoftmax layer.
-##Training classifier
-I trained the classifier for 10 epochs with batch size 40
 
--Below the preprocessing of the signal:
-This is the original EEG signal
-![OriginalSignal](images/Segnali_originali.png)
-Here I have cut some samples because it requires too much hardware
-![ProcessedSignal](images/Segnali_ridotti.png)
-and this represent 1-second epoch with sequence length of 200 samples, in this case eache cannel is divided by a chunk of 200
-![1 second signal for epochs](images/segnale_1sec_epoca.png)
+### **Training Classifier**
+The classifier was trained for **10 epochs** with batch size **40**.
+
+---
+
+## 🖼️ **Signal Preprocessing and Augmentation**
+
+### 1. **Original EEG Signal**
+This is the EEG signal extracted from the second dataset.
+
+![Original Signal](images/Segnali_originali.png)
+
+---
+
+### 2. **Preprocessed Signal**
+Here I cut off the signal because it required too many hardware resources.
+
+![Processed Signal](images/Segnali_ridotti.png)
+
+---
+
+### 3. **1-Second Epochs**
+The preprocessed EEG signal is segmented into 1-second epochs, where each epoch contains **200 samples** (for a sampling rate of 200 Hz). Below is an example of a 1-second epoch:
+
+![1-Second Signal for Epochs](images/segnale_1sec_epoca.png)
+
+---
+
+### 4. **First Dataset Preprocessing**
+For the first dataset, the preprocessing pipeline was applied in a similar manner, resulting in cleaned and filtered signals as shown below:
+
+![First Dataset Preprocessing](images/dataverse_segnali.png)
+
+---
+
+### 5. **Augmented Signal**
+The EEG signals were augmented using various transformations such as amplitude scaling, time shifting, and noise addition. Below is an example of an augmented signal:
+
+![Augmented Signal](images/Augmentation.png)
 
 ---
 
 ## 📈 **Evaluation**
 The performance metrics of the **Recurrent Encoder** and the **Convolutional Encoder** were compared to evaluate the classification accuracy and the effectiveness of the architectures.
-This is the performance metrics of the Recurrent encoder.
-![Confusion Matrix](images/evaluation_metrics_recurrent.png)
 
+### Recurrent Encoder Performance
+Below are the evaluation metrics for the Recurrent Encoder, including the confusion matrix:
+
+![Confusion Matrix](images/evaluation_metrics_recurrent.png)
 
 ---
 
