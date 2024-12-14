@@ -1,162 +1,164 @@
-# **Contrastive Representation Learning for Electroencephalogram Classification**
-**Pasquale Ricciulli 2115446**  
-[Original Paper](https://proceedings.mlr.press/v136/mohsenvand20a.html)
+# **Contrastive Representation Learning for Electroencephalogram Classification**  
+**Author:** Pasquale Ricciulli (2115446)  
+[**Original Paper**](https://proceedings.mlr.press/v136/mohsenvand20a.html)
 
-This repository provides a simplified reimplementation of the paper [Contrastive Representation Learning for Electroencephalogram Classification](https://proceedings.mlr.press/v136/mohsenvand20a.html). Below, you will find a detailed description of the methodology, pipeline, and results of this project.
+This repository provides a simplified reimplementation of the paper:  
+[Contrastive Representation Learning for Electroencephalogram Classification](https://proceedings.mlr.press/v136/mohsenvand20a.html).
 
----
-
-## **What does this project do?**
-
-This project leverages **contrastive representation learning** to classify emotional states (negative, neutral, positive) from **EEG (electroencephalogram)** data. The aim is to create robust feature representations by training on augmented EEG signals and using a contrastive loss function. These representations are later used to classify emotional states with high accuracy.
+The goal is to leverage self-supervised contrastive learning techniques to enhance the representation quality of EEG signals and improve the accuracy of emotion classification. By learning robust feature embeddings that differentiate between similar and dissimilar signal segments, the model can more effectively classify EEG data into emotional states (negative, neutral, and positive).
 
 ---
 
-### **How does it work?**
+## **Overview**
 
-The pipeline is divided into the following stages:
+Classifying emotional states from EEG data is challenging due to the noisy, high-dimensional, and time-dependent nature of the signals. Traditional supervised methods often rely on large, well-labeled datasets and may struggle to generalize. Contrastive representation learning helps overcome these limitations by learning meaningful, low-dimensional embeddings without relying directly on labels.
 
-### 1. **Preprocessing EEG Data**
-The raw EEG signals are noisy and contain unwanted artifacts. The preprocessing pipeline includes:
-- **Resampling**: All signals are resampled to a uniform frequency of **200 Hz**.
-- **Band-pass Filtering**: A fifth-order **Butterworth filter** is applied to retain only the relevant frequency band for EEG analysis.
-- **Artifact Removal**: Channels with extreme voltage values (**500 µV**) are removed, as these typically represent artifacts.
-
-This ensures the data is clean and consistent, making it suitable for further analysis.
-
----
-
-### 2. **Data Augmentation**
-To increase the diversity of the data and improve the encoder’s robustness, augmentation techniques are applied. For each EEG chunk:
-- **Two different augmentations** are applied to simulate variability (e.g., noise, time shifts, amplitude changes).
-- Augmentation techniques include:
-  - **Amplitude scaling**
-  - **Time shifts**
-  - **DC shifts**
-  - **Zero masking**
-  - **Additive Gaussian noise**
-  - **Band-stop filtering**
-
-Additionally, a **chunk from a different file or trial** is selected for contrastive training, enabling the model to distinguish between similar and different chunks.
+In this approach:
+1. **Preprocessing** ensures data quality by resampling, filtering, and removing artifacts.
+2. **Data Augmentation** increases sample diversity and prevents overfitting.
+3. **Contrastive Learning** trains encoders (recurrent and convolutional) to distinguish between positive and negative pairs of augmented EEG segments.
+4. **Emotion Recognition** uses the learned representations to classify EEG signals into one of three emotional states.
+5. **Evaluation** compares the performance of different encoders, highlighting the gains in accuracy and robustness.
 
 ---
 
-### 3. **Contrastive Learning**
-The core idea is to train two types of encoders (Recurrent and Convolutional) using a **contrastive loss function**:
-- **Positive Pairs**: Two augmented views of the same EEG chunk.
-- **Negative Pairs**: A chunk from a different file or trial.
+## **Methodology**
 
-The contrastive loss maximizes the similarity between positive pairs and minimizes the similarity between negative pairs, allowing the encoder to learn robust feature representations.
+### 1. Preprocessing EEG Data
 
----
+EEG signals can contain various artifacts and noise sources. To ensure the model focuses on relevant brain activity, we apply a preprocessing pipeline that includes:
 
-### 4. **Emotion Recognition Classifier**
-Once the encoders are trained, they are **frozen**, and a classifier is trained on the frozen representations to classify EEG signals into three emotional states:
-- **0 (Negative)**: Represents negative emotional responses.
-- **1 (Neutral)**: Represents neutral or baseline emotional responses.
-- **2 (Positive)**: Represents positive emotional responses.
+- **Resampling:** All EEG signals are resampled to 200 Hz, ensuring uniform segment sizes.
+- **Band-pass Filtering:** A fifth-order Butterworth filter retains frequencies of interest while removing irrelevant frequency components.
+- **Artifact Removal:** Channels exceeding 500 µV are discarded to remove extreme noise or non-physiological signals.
 
-The classifier uses the output of the encoder as input and is trained using a **cross-entropy loss function**.
+**Result:** The cleaned, uniform data is now ready for subsequent feature extraction and training steps.
 
----
-
-### 5. **Evaluation**
-The models are evaluated using:
-- **Accuracy**
-- **Precision**
-- **Recall**
-- **F1-score**
-- **Confusion Matrix**
-
-Both the **Recurrent Encoder** and the **Convolutional Encoder** are compared to determine which architecture performs better on the emotion recognition task.
-
----
-
-## **Project Pipeline**
-
-### **1. Preprocessing**
-- **Resampling**: The EEG data is resampled to **200 Hz**.
-- **Filtering**: A fifth-order band-pass Butterworth filter is applied to remove unwanted frequencies.
-- **Artifact Removal**: Channels with voltages exceeding **±500 µV** are excluded.
-
-#### Example of the raw EEG signal:
+#### Example of the raw EEG signal (Seed dataset):
 ![Original Signal](images/Segnali_originali.png)
 
-#### Example of the preprocessed EEG signal:
+#### Example of the preprocessed EEG signal (Seed dataset):
 ![Processed Signal](images/Segnali_ridotti.png)
+
+#### 1-second epochs (200 samples each) for classification tasks:
+![Processed Signal](images/segnale_1sec_epoca.png)
+
+#### From original to preprocessed (Texas State University Resting State dataset):
+![Processed Signal](images/dataverse_segnali.png)
 
 ---
 
-### **2. Data Augmentation**
-Two augmentations are applied to each EEG chunk to improve the robustness of the encoders. Augmentation techniques include:
+### 2. Data Augmentation
 
-| **Transformation**                 | **Min**      | **Max** |
-|-------------------------------------|--------------|---------|
-| Amplitude scale                     | 0.5          | 2       |
-| Time shift (samples)                | -50          | 50      |
-| DC shift (µV)                       | -10          | 10      |
-| Zero-masking (samples)              | 0            | 150     |
-| Additive Gaussian noise (σ)         | 0            | 0.2     |
-| Band-stop filter (5 Hz width) (Hz)  | 2.8          | 82      |
+To improve the model’s generalization and robustness, we apply a range of augmentations. Each original EEG chunk is transformed into multiple variations, exposing the model to diverse conditions. These techniques help the encoder learn invariant features that hold true across a spectrum of scenarios.
+
+**Augmentation Techniques:**
+- **Amplitude Scaling**
+- **Time Shifts**
+- **DC Shifts**
+- **Zero Masking**
+- **Additive Gaussian Noise**
+- **Band-stop Filtering**
+
+| Transformation                      | Min    | Max  |
+|-------------------------------------|--------|------|
+| Amplitude scale                     | 0.5    | 2    |
+| Time shift (samples)                | -50    | 50   |
+| DC shift (µV)                       | -10    | 10   |
+| Zero-masking (samples)              | 0      | 150  |
+| Additive Gaussian noise (σ)         | 0      | 0.2  |
+| Band-stop filter (5 Hz width) (Hz)  | 2.8    | 82   |
 
 #### Example of an augmented EEG signal:
 ![Augmented Signal](images/Augmentation.png)
 
 ---
 
-### **3. Contrastive Learning**
-- The **contrastive loss function** maximizes the similarity between two augmented views of the same EEG chunk while minimizing the similarity between different chunks.
-- The encoders (Recurrent and Convolutional) are trained using this objective.
+### 3. Contrastive Learning
+
+In contrastive learning, we create pairs of samples to teach the encoder a meaningful representation space:
+
+- **Positive Pairs:** Two augmented views of the same EEG chunk. The encoder learns to maximize similarity between these two views.
+- **Negative Pairs:** Pairs drawn from different EEG chunks or trials. The encoder learns to minimize similarity, pushing these pairs apart in the embedding space.
+
+By optimizing a contrastive loss function, the encoder discovers low-dimensional representations that effectively separate distinct EEG patterns without relying on label information.
+
+We experiment with two encoder architectures:
+
+- **Recurrent Encoder (RNN-based):** Captures temporal dependencies, potentially excelling at sequential signal patterns.
+- **Convolutional Encoder (CNN-based):** Efficiently extracts local features and is easily scalable.
 
 #### Encoder Architectures:
 ![Architectures](images/Architectures.png)
 
 ---
 
-### **4. Emotion Recognition Classifier**
-Once the encoders are trained, they are **frozen**, and a classifier is trained on top of the frozen representations. The classifier predicts one of three emotional states:
+### 4. Emotion Recognition Classifier
+
+After the encoder is trained using contrastive learning, we **freeze** its weights. The fixed embeddings become input features for a supervised classifier that predicts the emotional state:
+
 - **0 (Negative)**
 - **1 (Neutral)**
 - **2 (Positive)**
 
+The classifier is trained using the labeled data and a standard cross-entropy loss. This two-stage process—unsupervised pretraining followed by supervised fine-tuning—yields a model that can classify EEG signals with improved accuracy and robustness.
+
 ---
 
-## **Evaluation**
+### 5. Evaluation
 
-The models were evaluated using a test set, and the performance metrics for the Recurrent and Convolutional encoders are provided below.
+We evaluate the trained models on a held-out test set. Key metrics include:
 
-### **Recurrent Encoder Performance**
-- **Accuracy**: **81%**
-- Confusion Matrix:
+- **Accuracy**
+- **Precision**
+- **Recall**
+- **F1-score**
+- **Confusion Matrix**
 
+These metrics provide insight into the model’s performance, highlighting strengths and potential areas for improvement. We compare results from the recurrent and convolutional encoders to understand which architecture better captures EEG signal characteristics under this contrastive framework.
+
+---
+
+## **Results**
+
+### Recurrent Encoder
+- **Accuracy:** ~81%
+
+**Confusion Matrix:**
 ![Recurrent Encoder Confusion Matrix](images/evaluation_metrics_recurrent.png)
 
+The recurrent encoder captures temporal dependencies effectively, resulting in high accuracy and strong overall performance in classifying emotional states.
+
 ---
 
-### **Convolutional Encoder Performance**
-- **Accuracy**: **78%**
-- Despite fewer training epochs (10 vs. 24), the Convolutional Encoder performed close to the Recurrent Encoder.
-- Confusion Matrix:
+### Convolutional Encoder
+- **Accuracy:** ~78%
 
+**Confusion Matrix:**
 ![Convolutional Encoder Confusion Matrix](images/evaluation_convolutional.png)
 
+Trained for fewer epochs (10 vs. 24 for the recurrent model), the convolutional encoder still achieves competitive results. With additional training time, it may reach or surpass the recurrent encoder’s performance.
+
 ---
 
-## **Key Results**
-- The **Recurrent Encoder** slightly outperformed the Convolutional Encoder, achieving **81% accuracy** on the test set.
-- The **Convolutional Encoder** demonstrated efficiency, achieving **78% accuracy** with fewer training epochs.
-- I believe that convolution is the best model if it is trained with the same epochs as the recurrent model.
+## **Key Takeaways**
+
+- **Recurrent Encoder:** Achieves top accuracy (81%), indicating that modeling temporal dependencies is vital for effective EEG classification.
+- **Convolutional Encoder:** Highly efficient and competitive even with shorter training. Given equal training time, it may match or exceed the recurrent model’s performance.
+
+This project demonstrates that contrastive learning can significantly improve the quality of EEG signal representations, making subsequent classification more accurate and robust.
 
 ---
 
 ## **References**
-- [Contrastive Representation Learning for Electroencephalogram Classification](https://proceedings.mlr.press/v136/mohsenvand20a.html)
+
+- Mohsenvand, M., et al. *"Contrastive Representation Learning for Electroencephalogram Classification."* ML4H at NeurIPS (2020).  
+  [Link](https://proceedings.mlr.press/v136/mohsenvand20a.html)
 
 ---
 
 ## **How to Use**
 
-### 1. Clone the repository and run the ipynb with the correct dataset:
-```bash
-git clone https://github.com/your-repository-name.git
-
+1. **Clone the Repository:**
+   ```bash
+   git clone https://github.com/your-repository-name.git
