@@ -156,6 +156,7 @@ The models were evaluated using a test set, and the performance metrics for the 
 
 ## **How to Use**
 
-### 1. Clone the repository:
+### 1. Clone the repository and run the ipynb with the correct dataset:
 ```bash
 git clone https://github.com/your-repository-name.git
+
