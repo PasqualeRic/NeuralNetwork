@@ -6,7 +6,7 @@ This repository provides a simplified reimplementation of the paper [Contrastive
 
 ---
 
-## 🚀 **Project Overview**
+## **Project Overview**
 The implementation consists of the following phases:
 1. **Preprocessing**: Resampling, filtering, and artifact removal.
 2. **Data Augmentation**: Applying diverse transformations to improve robustness.
@@ -16,14 +16,14 @@ The implementation consists of the following phases:
 
 ---
 
-## 📊 **Preprocessing Phase**
+## **Preprocessing Phase**
 - **Resampling**: The entire dataset was resampled to **200 Hz**.
 - **Filtering**: A fifth-order band-pass Butterworth filter was applied.
 - **Artifact Removal**: Channels with voltages exceeding **500 µV** were excluded, as these typically represent artifacts.
 
 ---
 
-## 🔄 **Data Augmentation**
+## **Data Augmentation**
 Before feeding the data to the encoders, the EEG signals were divided into **chunks of size 4000**. For each chunk, two random augmentations were applied from the following transformations:
 
 | **Transformation**                 | **Min**      | **Max** |
@@ -37,7 +37,7 @@ Before feeding the data to the encoders, the EEG signals were divided into **chu
 
 ---
 
-## 🧠 **Encoders**
+## **Encoders**
 - **Recurrent Encoder**:
   - Trained for **24 epochs** with batch size **40**.
 - **Convolutional Encoder**:
@@ -49,7 +49,7 @@ Below is a visualization of the architectures of the two encoders:
 
 ---
 
-## 🏷️ **Classifier**
+## **Classifier**
 - Each EEG channel is processed through the encoder, and the **4-dimensional output sequences** are concatenated.
 - The classifier takes a **4×20-dimensional sequence of length 200** (representing 1-second epochs of EEG data).
 - **Modifications**:
@@ -63,7 +63,7 @@ The classifier was trained for **10 epochs** with batch size **40**.
 
 ---
 
-## 🖼️ **Signal Preprocessing and Augmentation**
+## **Signal Preprocessing and Augmentation**
 
 ### 1. **Original EEG Signal**
 This is the EEG signal extracted from the second dataset.
@@ -100,7 +100,7 @@ The EEG signals were augmented using various transformations such as amplitude s
 
 ---
 
-## 📈 **Evaluation**
+## **Evaluation**
 The performance metrics of the **Recurrent Encoder** and the **Convolutional Encoder** were compared to evaluate the classification accuracy and the effectiveness of the architectures.
 
 ### Recurrent Encoder Performance
@@ -110,7 +110,7 @@ Below are the evaluation metrics for the Recurrent Encoder, including the confus
 
 ---
 
-## 📜 **References**
+## **References**
 - [Contrastive Representation Learning for Electroencephalogram Classification](https://proceedings.mlr.press/v136/mohsenvand20a.html)
 
 ---
