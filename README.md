@@ -46,6 +46,8 @@ Before feeding the data to the encoders, the EEG signals were divided into **chu
 Below is a visualization of the architectures of the two encoders:
 
 ![Architectures](images/Architectures.png)
+Here we can find the preprocessing and augmentation of the signal
+
 
 ---
 
@@ -57,11 +59,24 @@ Below is a visualization of the architectures of the two encoders:
   - A **LogSoftmax layer** is added.
 - **Loss Function**:
   - Negative log-likelihood loss is computed alongside the LogSoftmax layer.
+##Training classifier
+I trained the classifier for 10 epochs with batch size 40
+
+-Below the preprocessing of the signal:
+This is the original EEG signal
+![OriginalSignal](images/Segnali_originali.png)
+Here I have cut some samples because it requires too much hardware
+![ProcessedSignal](images/Segnali_ridotti.png)
+and this represent 1-second epoch with sequence length of 200 samples, in this case eache cannel is divided by a chunk of 200
+![1 second signal for epochs](images/segnale_1sec_epoca.png)
 
 ---
 
 ## 📈 **Evaluation**
 The performance metrics of the **Recurrent Encoder** and the **Convolutional Encoder** were compared to evaluate the classification accuracy and the effectiveness of the architectures.
+This is the performance metrics of the Recurrent encoder.
+![Confusion Matrix](images/evaluation_metrics_recurrent.png)
+
 
 ---
 
