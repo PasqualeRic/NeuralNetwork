@@ -120,7 +120,7 @@ These metrics provide insight into the model’s performance, highlighting stren
 
 ## **Results**
 
-### Recurrent Encoder
+### Recurrent model
 - **Accuracy:** ~81%
 
 **Confusion Matrix:**
@@ -130,13 +130,11 @@ The recurrent encoder captures temporal dependencies effectively, resulting in h
 
 ---
 
-### Convolutional Encoder
+### Convolutional model
 - **Accuracy:** ~78%
 
 **Confusion Matrix:**
 ![Convolutional Encoder Confusion Matrix](images/evaluation_convolutional.png)
-
-Trained for fewer epochs (10 vs. 24 for the recurrent model), the convolutional encoder still achieves competitive results. With additional training time, it may reach or surpass the recurrent encoder’s performance.
 
 ---
 
