@@ -142,8 +142,8 @@ The recurrent encoder captures temporal dependencies effectively, resulting in h
 
 ## **Key Takeaways**
 
-- **Recurrent Encoder:** Achieves top accuracy (81%), indicating that modeling temporal dependencies is vital for effective EEG classification.
-- **Convolutional Encoder:** Highly efficient and competitive even with shorter training. Given equal training time, it may match or exceed the recurrent model’s performance.
+- **Recurrent Encoder:** Achieves top accuracy (88%), indicating that modeling temporal dependencies is vital for effective EEG classification.
+- **Convolutional Encoder:** Highly efficient and competitive a little bit less accurate then Recurrent.
 
 This project demonstrates that contrastive learning can significantly improve the quality of EEG signal representations, making subsequent classification more accurate and robust.
 
