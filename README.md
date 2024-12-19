@@ -121,9 +121,10 @@ These metrics provide insight into the model’s performance, highlighting stren
 ## **Results**
 
 ### Recurrent model
-- **Accuracy:** ~81%
+- **Accuracy:** ~88%
 
-**Confusion Matrix:**
+**Confusion Matrix and Classification Report:**
+
 ![Recurrent Encoder Confusion Matrix](images/evaluation_metrics_recurrent.png)
 
 The recurrent encoder captures temporal dependencies effectively, resulting in high accuracy and strong overall performance in classifying emotional states.
@@ -131,9 +132,10 @@ The recurrent encoder captures temporal dependencies effectively, resulting in h
 ---
 
 ### Convolutional model
-- **Accuracy:** ~78%
+- **Accuracy:** ~85%
 
-**Confusion Matrix:**
+**Confusion Matrix and Classification Report:**
+
 ![Convolutional Encoder Confusion Matrix](images/evaluation_convolutional.png)
 
 ---
