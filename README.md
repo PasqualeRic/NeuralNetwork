@@ -157,7 +157,13 @@ This project demonstrates that contrastive learning can significantly improve th
 ---
 
 ## **How to Use**
-
+You can use the the provided Jupyter notebooks.
+The Training_encoders file is used to train the encoders, if you want the weights, please contact me.
+The Training_classifier file contains the code for training and the code for evaluation
 1. **Clone the Repository:**
    ```bash
    git clone https://github.com/your-repository-name.git
+   ```
+2. Start loading the notebook in a Jupyter environment.
+3. Load the dataset, and run all cells for both files.
+4. The last cell contains the evaluation of the two classifiers.
